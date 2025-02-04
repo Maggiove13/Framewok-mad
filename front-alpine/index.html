@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Link Manager - Alpine.js</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <div id="app" x-data="linkManager">
+        <template x-if="!currentLink">
+            <div>
+                <h1>Link Manager</h1>
+                <form @submit="createLink">
+                    <input type="text" name="title" placeholder="Título" required>
+                    <input type="url" name="url" placeholder="URL" required>
+                    <input type="text" name="tags" placeholder="Tags (separadas por coma)">
+                    <textarea name="description" placeholder="Descripción"></textarea>
+                    <button type="submit">Crear Link</button>
+                </form>
+
+                <div id="linkFilter">
+                    <input type="text" x-ref="tagFilter" @input="$el.dispatchEvent(new Event('change'))" 
+                        placeholder="Filtrar por tag">
+                </div>
+
+                <div id="linkList">
+                    <template x-for="link in filteredLinks" :key="link.id">
+                        <div class="link-card">
+                            <h3 x-text="link.title"></h3>
+                            <p>Tags: <span x-text="link.tags.join(', ')"></span></p>
+                            <div class="link-actions">
+                                <button @click="voteLink(link.id, 1)" class="vote-btn">
+                                    👍 (<span x-text="link.votes || 0"></span>)
+                                </button>
+                                <button @click="editLink(link)" class="edit-btn">Editar</button>
+                                <button @click="deleteLink(link.id)" class="delete-btn">Eliminar</button>
+                                <a :href="'#/link/' + link.id">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template x-if="currentLink">
+            <div class="link-detail">
+                <h1 x-text="currentLink.title"></h1>
+                <div class="link-info">
+                    <p><strong>URL:</strong> <a :href="currentLink.url" target="_blank" x-text="currentLink.url"></a></p>
+                    <p><strong>Descripción:</strong> <span x-text="currentLink.description"></span></p>
+                    <div class="vote-section">
+                        <button @click="voteLink(currentLink.id, 1)">
+                            👍 Votos: <span x-text="currentLink.votes || 0"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <h2>Comentarios</h2>
+                <form @submit="addComment">
+                    <input type="text" name="email" placeholder="Tu email" required>
+                    <textarea name="content" placeholder="Escribe tu comentario" required></textarea>
+                    <button type="submit">Enviar Comentario</button>
+                </form>
+
+                <div id="commentList">
+                    <template x-for="comment in comments" :key="comment.id">
+                        <div class="comment">
+                            <p x-text="comment.content"></p>
+                            <small>Enviado por: <span x-text="comment.email"></span></small>
+                        </div>
+                    </template>
+                </div>
+
+                <a href="#/" class="back-link">Volver a la lista</a>
+            </div>
+        </template>
+    </div>
+    <script src="api.js"></script>
+</body>
+</html> 

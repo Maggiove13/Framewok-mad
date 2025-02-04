@@ -1,0 +1,30 @@
+<div class="link-detail" *ngIf="link">
+  <h1>{{link.title}}</h1>
+  
+  <div class="link-info">
+    <p><strong>URL:</strong> <a [href]="link.url" target="_blank">{{link.url}}</a></p>
+    <p><strong>Descripción:</strong> {{link.description}}</p>
+    <p><strong>Tags:</strong> {{link.tags.join(', ')}}</p>
+    
+    <div class="vote-section">
+      <button (click)="voteLink()">👍 Votos: {{link.votes || 0}}</button>
+    </div>
+  </div>
+
+  <h2>Comentarios</h2>
+  <form (submit)="addComment($event)">
+    <input type="email" name="email" placeholder="Tu email" required>
+    <textarea name="content" placeholder="Escribe tu comentario" required></textarea>
+    <button type="submit">Enviar Comentario</button>
+  </form>
+
+  <div id="commentList">
+    <div class="comment" *ngFor="let comment of comments">
+      <p>{{comment.content}}</p>
+      <small>Enviado por: {{comment.email}}</small>
+    </div>
+    <p *ngIf="comments.length === 0">No hay comentarios aún</p>
+  </div>
+
+  <a routerLink="/" class="back-link">Volver a la lista</a>
+</div> 

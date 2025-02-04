@@ -1,0 +1,31 @@
+<div class="container">
+  <h1>Link Manager</h1>
+  
+  <!-- Formulario de creación -->
+  <form (submit)="createLink($event)">
+    <input type="text" name="title" placeholder="Título" required>
+    <input type="url" name="url" placeholder="URL" required>
+    <input type="text" name="tags" placeholder="Tags (separadas por coma)">
+    <textarea name="description" placeholder="Descripción"></textarea>
+    <button type="submit">Crear Link</button>
+  </form>
+
+  <!-- Filtro de tags -->
+  <div id="linkFilter">
+    <input type="text" (input)="filterByTag($event)" placeholder="Filtrar por tag">
+  </div>
+
+  <!-- Lista de enlaces -->
+  <div id="linkList">
+    <div class="link-card" *ngFor="let link of filteredLinks">
+      <h3>{{link.title}}</h3>
+      <p>Tags: {{link.tags.join(', ')}}</p>
+      <div class="link-actions">
+        <button class="vote-btn" (click)="voteLink(link.id)">👍 ({{link.votes || 0}})</button>
+        <button class="edit-btn" (click)="editLink(link)">Editar</button>
+        <button class="delete-btn" (click)="deleteLink(link.id)">Eliminar</button>
+        <a [routerLink]="['/link', link.id]">Ver Detalles</a>
+      </div>
+    </div>
+  </div>
+</div>

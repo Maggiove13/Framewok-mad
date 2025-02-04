@@ -1,0 +1,58 @@
+
+{
+    "title": "Pelicula 1",
+    "url": "https://pelicula1.netflix.org/",
+    "description": "Una emocionante película de acción y aventura.",
+    "tags": ["acción", "aventura"],
+    "votes": 0
+}
+{
+    "title": "Pelicula 2",
+    "url": "https://pelicula2.netflix.org/",
+    "description": "Una historia de comedia que te hará reír a carcajadas.",
+    "tags": ["comedia", "drama"],
+    "votes": 0
+}
+{
+    "title": "Pelicula 3",
+    "url": "https://pelicula3.netflix.org/",
+    "description": "Una película de terror que te mantendrá al borde de tu asiento.",
+    "tags": ["terror", "misterio"],
+    "votes": 0
+}
+{
+    "title": "Pelicula 4",
+    "url": "https://pelicula4.netflix.org/",
+    "description": "Un drama romántico lleno de emociones profundas.",
+    "tags": ["romántica", "drama"],
+    "votes": 0
+}
+{
+    "title": "Pelicula 5",
+    "url": "https://pelicula5.netflix.org/",
+    "description": "Una película de ciencia ficción con efectos especiales impresionantes.",
+    "tags": ["ciencia ficción", "acción"],
+    "votes": 0
+}
+
+
+{
+    "content": "Excelente película, muy entretenida de principio a fin.",
+    "email": "usuario1@ejemplo.com"
+},
+{
+    "content": "No es lo que esperaba, pero estuvo bastante bien.",
+    "email": "usuario2@ejemplo.com"
+},
+{
+    "content": "Me encantó, la trama es muy original y los actores están geniales.",
+    "email": "usuario3@ejemplo.com"
+},
+{
+    "content": "Un poco lenta al principio, pero luego se pone interesante.",
+    "email": "usuario4@ejemplo.com"
+},
+{
+    "content": "¡Una de mis películas favoritas! Altamente recomendada.",
+    "email": "usuario5@ejemplo.com"
+}
