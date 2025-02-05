@@ -11,7 +11,7 @@ const LinkManager = {
 
     setupRouting() {
         window.addEventListener('hashchange', () => this.renderView()); // Cada vez que el hash cambia, se llama a la función renderView().
-        this.renderView(); //renderiza la vista 
+        this.renderView(); //renderiza la vista inicial
     },
 
     renderView() {
