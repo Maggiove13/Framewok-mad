@@ -252,7 +252,7 @@ const LinkManager = {
                 });
 
                 this.fetchAndRenderComments(linkId);
-                form.reset();
+                form.reset(); // restablece el form
             } catch (error) {
                 console.error('Error al enviar comentario:', error);
                 alert('No se pudo enviar el comentario');
