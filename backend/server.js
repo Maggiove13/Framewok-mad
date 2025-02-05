@@ -29,13 +29,14 @@ app.use(cors({
 }));
 
 // Manejo de preflight OPTIONS
-app.options("*", cors());
-//parsear json
-app.use(express.json());
+//app.options("*", cors());
 
-// Rutas de prueba para verificar conexión
-app.get("/", (req, res) => {
-    res.send("API corriendo correctamente 🚀");
+//Middleware para parsear json
+app.use(express.json()); //parsear json
+
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
 });
 
 // Rutas de la API
@@ -54,11 +55,6 @@ apiRouter.get("/links/:linkId/comments", CommentController.getComments);
 // Usar el router
 app.use("/api", apiRouter);
 
-// Middleware de manejo de errores
-app.use((err, req, res, next) => {
-    console.error("Error en el servidor:", err);
-    res.status(err.status || 500).json({ error: err.message || "Error interno del servidor" });
-});
 
 // Iniciar servidor
 app.listen(port, () => {
