@@ -203,7 +203,7 @@ const LinkManager = {
                 </div>
             `;
              // Agregar event listener al botón de voto
-            const voteBtn = this.root.querySelector('.vote-btn');
+            const voteBtn = document.querySelector('.vote-btn');
             voteBtn.addEventListener('click', () => this.voteLink(link.id, 1));
 
 
