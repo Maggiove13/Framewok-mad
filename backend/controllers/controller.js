@@ -110,11 +110,7 @@ const CommentController = {
     getComments: (req, res) => {
         const { linkId } = req.params;
         const linkComments = comments.filter(c => c.linkId === linkId);
-
-        if (linkComments.length === 0) {
-            return res.status(404).json({ message: "No comments found" });
-        }
-
+        
         res.status(200).json({ comments: linkComments });
     }
 };
