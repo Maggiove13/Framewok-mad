@@ -3,6 +3,7 @@ const API_URL = 'http://localhost:3000/api';
 const LinkManager = {
     root: null,
     links: [],
+    currentFilter: '',
 
     init() {
         this.root = document.getElementById('app');
@@ -44,17 +45,14 @@ const LinkManager = {
         await this.fetchLinks();
         this.setupLinkForm();
         this.setupTagFilter();
-        this.renderLinks();
     },
 
     setupTagFilter() {
         const tagFilter = document.getElementById('tagFilter');
+        tagFilter.value = this.currentFilter;
         tagFilter.addEventListener('input', () => {
-            const filterValue = tagFilter.value.toLowerCase();
-            const filteredLinks = this.links.filter(link => 
-                link.tags.some(tag => tag.toLowerCase().includes(filterValue))
-            );
-            this.renderLinks(filteredLinks);
+            this.currentFilter = tagFilter.value.toLowerCase();
+            this.renderFilteredLinks();
         });
     },
 
@@ -62,13 +60,20 @@ const LinkManager = {
         const response = await fetch(`${API_URL}/links`);
         const data = await response.json();
         this.links = data.links;
+        this.renderFilteredLinks();
     },
 
-    renderLinks(linksToRender = this.links) {
+    renderFilteredLinks() {
+        const filteredLinks = this.currentFilter
+            ? this.links.filter(link => 
+                link.tags.some(tag => tag.toLowerCase().includes(this.currentFilter))
+            )
+            : this.links;
+        
         const linkList = document.getElementById('linkList');
         linkList.innerHTML = '';
     
-        linksToRender.forEach(link => {
+        filteredLinks.forEach(link => {
             const div = document.createElement('div');
             div.classList.add('link-card');
             div.innerHTML = `
@@ -117,7 +122,6 @@ const LinkManager = {
                 });
 
                 await this.fetchLinks();
-                this.renderLinks();
                 form.reset();
             } catch (error) {
                 console.error('Error:', error);
@@ -149,7 +153,6 @@ const LinkManager = {
                 });
 
                 await this.fetchLinks();
-                this.renderLinks();
             } catch (error) {
                 console.error('Error al editar:', error);
                 alert('No se pudo editar el enlace');
@@ -165,7 +168,6 @@ const LinkManager = {
                 });
 
                 await this.fetchLinks();
-                this.renderLinks();
             } catch (error) {
                 console.error('Error al eliminar:', error);
                 alert('No se pudo eliminar el enlace');
@@ -202,10 +204,9 @@ const LinkManager = {
                     <a href="#/" class="back-link">Volver a la lista</a>
                 </div>
             `;
-             // Agregar event listener al botón de voto
+
             const voteBtn = document.querySelector('.vote-btn');
             voteBtn.addEventListener('click', () => this.voteLink(link.id, 1));
-
 
             this.fetchAndRenderComments(linkId);
             this.setupCommentForm(linkId);
@@ -252,7 +253,7 @@ const LinkManager = {
                 });
 
                 this.fetchAndRenderComments(linkId);
-                form.reset(); // restablece el form
+                form.reset();
             } catch (error) {
                 console.error('Error al enviar comentario:', error);
                 alert('No se pudo enviar el comentario');
@@ -272,7 +273,6 @@ const LinkManager = {
                 this.renderLinkDetail(linkId);
             } else {
                 await this.fetchLinks();
-                this.renderLinks();
             }
         } catch (error) {
             console.error('Error al votar:', error);
@@ -283,7 +283,6 @@ const LinkManager = {
 
 window.LinkManager = LinkManager;
 
-// Inicializar la aplicación
 window.addEventListener('DOMContentLoaded', () => {
     LinkManager.init();
 });
