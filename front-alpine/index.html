@@ -20,8 +20,11 @@
                 </form>
 
                 <div id="linkFilter">
-                    <input type="text" x-ref="tagFilter" @input="$el.dispatchEvent(new Event('change'))" 
-                        placeholder="Filtrar por tag">
+                    <input 
+                        type="text" 
+                        x-model="tagFilter"
+                        placeholder="Filtrar por tag"
+                        @input="updateTagFilter($el.value)">
                 </div>
 
                 <div id="linkList">

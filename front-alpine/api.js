@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
         links: [],
         comments: [],
         currentLink: null,
+        tagFilter: '',
         
         init() {
             this.setupRouting();
@@ -23,25 +24,36 @@ document.addEventListener('alpine:init', () => {
                 this.renderLinkDetail(linkId);
             } else {
                 this.currentLink = null;
+                this.fetchLinks();
             }
         },
 
         async fetchLinks() {
             try {
                 const response = await fetch(`${API_URL}/links`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 this.links = data.links;
             } catch (error) {
                 console.error('Error fetching links:', error);
+                alert('Error al cargar los enlaces');
             }
         },
 
         get filteredLinks() {
-            const filterValue = this.$refs.tagFilter?.value.toLowerCase() || '';
-            if (!filterValue) return this.links;
+            if (!this.tagFilter.trim()) return this.links;
+            
             return this.links.filter(link => 
-                link.tags.some(tag => tag.toLowerCase().includes(filterValue))
+                link.tags.some(tag => 
+                    tag.toLowerCase().includes(this.tagFilter.toLowerCase().trim())
+                )
             );
+        },
+
+        updateTagFilter(value) {
+            this.tagFilter = value;
         },
 
         async createLink(event) {
@@ -52,16 +64,23 @@ document.addEventListener('alpine:init', () => {
             const link = {
                 title: formData.get('title'),
                 url: formData.get('url'),
-                description: formData.get('description'),
-                tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t)
+                description: formData.get('description') || '',
+                tags: formData.get('tags')?.split(',').map(t => t.trim()).filter(t => t) || []
             };
 
             try {
-                await fetch(`${API_URL}/links`, {
+                const response = await fetch(`${API_URL}/links`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify(link)
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
                 await this.fetchLinks();
                 form.reset();
@@ -72,18 +91,26 @@ document.addEventListener('alpine:init', () => {
         },
 
         async voteLink(linkId, vote) {
+            if (!linkId) return;
+
             try {
-                await fetch(`${API_URL}/links/${linkId}/vote`, {
+                const response = await fetch(`${API_URL}/links/${linkId}/vote`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify({ vote })
                 });
 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 if (this.currentLink?.id === linkId) {
                     await this.renderLinkDetail(linkId);
-                } else {
-                    await this.fetchLinks();
                 }
+                await this.fetchLinks();
             } catch (error) {
                 console.error('Error al votar:', error);
                 alert('No se pudo registrar el voto');
