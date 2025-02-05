@@ -10,12 +10,12 @@ const LinkManager = {
     },
 
     setupRouting() {
-        window.addEventListener('hashchange', () => this.renderView()); // Cada vez que el hash cambia, se llama a la función renderView().
-        this.renderView(); //renderiza la vista inicial
+        window.addEventListener('hashchange', () => this.renderView());
+        this.renderView();
     },
 
     renderView() {
-        const hash = window.location.hash; // Obtiene el hash actual de la URL
+        const hash = window.location.hash; 
         
         if (hash.startsWith('#/link/')) {
             const linkId = hash.split('/')[2];
@@ -28,7 +28,7 @@ const LinkManager = {
     async renderLinkList() {
         this.root.innerHTML = `
             <h1>Link Manager</h1>
-            <form id="linkForm"> 
+            <form id="linkForm">
                 <input type="text" name="title" placeholder="Título" required>
                 <input type="url" name="url" placeholder="URL" required>
                 <input type="text" name="tags" placeholder="Tags (separadas por coma)">
@@ -61,7 +61,7 @@ const LinkManager = {
     async fetchLinks() {
         const response = await fetch(`${API_URL}/links`);
         const data = await response.json();
-        this.links = data.links; // accedemos a la propiedad links del objeto data
+        this.links = data.links;
     },
 
     renderLinks(linksToRender = this.links) {
@@ -83,7 +83,7 @@ const LinkManager = {
             `;
             linkList.appendChild(div);
         });
-
+    
         document.querySelectorAll('.vote-btn').forEach(btn => {
             btn.addEventListener('click', () => this.voteLink(btn.dataset.id, 1));
         });
@@ -147,7 +147,6 @@ const LinkManager = {
                         tags: newTags.split(',').map(t => t.trim()).filter(t => t)
                     })
                 });
-
 
                 await this.fetchLinks();
                 this.renderLinks();
