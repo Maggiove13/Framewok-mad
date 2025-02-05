@@ -186,7 +186,7 @@ const LinkManager = {
                         <p><strong>URL:</strong> <a href="${link.url}" target="_blank">${link.url}</a></p>
                         <p><strong>Descripción:</strong> ${link.description}</p>
                         <div class="vote-section">
-                            <button onclick="LinkManager.voteLink('${link.id}', 1)">👍 Votos: ${link.votes || 0}</button>
+                            <button class="vote-btn" data-id="${link.id}">👍 Votos: ${link.votes || 0}</button>
                         </div>
                     </div>
 
@@ -202,6 +202,10 @@ const LinkManager = {
                     <a href="#/" class="back-link">Volver a la lista</a>
                 </div>
             `;
+             // Agregar event listener al botón de voto
+            const voteBtn = this.root.querySelector('.vote-btn');
+            voteBtn.addEventListener('click', () => this.voteLink(link.id, 1));
+
 
             this.fetchAndRenderComments(linkId);
             this.setupCommentForm(linkId);
