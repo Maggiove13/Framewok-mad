@@ -66,8 +66,7 @@ const LinkManager = {
     renderFilteredLinks() {
         const filteredLinks = this.currentFilter
             ? this.links.filter(link => 
-                link.tags.some(tag => tag.toLowerCase().includes(this.currentFilter))
-            )
+                link.tags.some(tag => tag.toLowerCase().includes(this.currentFilter)))
             : this.links;
         
         const linkList = document.getElementById('linkList');
