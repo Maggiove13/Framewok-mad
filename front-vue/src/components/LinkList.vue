@@ -57,7 +57,8 @@ export default {
       }
     };
   },
-  computed: {
+   //propiedad computada que dependen de otras funciones reactivass
+  computed: {  
     filteredLinks() {
       if (!this.tagFilter.trim()) return this.links;
       
@@ -98,7 +99,7 @@ export default {
         if (!response.ok) throw new Error('Error al crear el enlace');
 
         await this.fetchLinks();
-        this.newLink = { title: '', url: '', description: '', tags: '' };
+        this.newLink = { title: '', url: '', description: '', tags: '' }; // Limpiar formulario
       } catch (error) {
         console.error('Error:', error);
       }
@@ -167,7 +168,7 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted() { //se ejecuta despues de que el componente se ha renderizado
     this.fetchLinks();
   }
 };
